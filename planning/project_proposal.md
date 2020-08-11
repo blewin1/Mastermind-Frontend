@@ -51,6 +51,29 @@ After the MVP is implemented, the following features will be considered.
 
 - If there becomes metadata related to a game type then it may end up warrenting it's own model.  (Perhaps I'll keep track of global game stats too :O )
 
+### Time/Priority Matrix
+
+| Component           | Priority | Estimated Time | Time Invested | 
+| ------------------- | :------: | :------------: | :-----------: | 
+| Game Board          |    H     |      12hrs     |               | 
+| Game Functionality  |    H     |      3hrs      |               | 
+| Backend Setup       |    H     |      1hr       |               | 
+| Backend Deployment  |    H     |      1hr       |               | 
+| Nav Bar             |    H     |      2hrs      |               | 
+| Sign in Page        |    H     |      2hrs      |               | 
+| Stats Page          |    H     |      4hrs      |               | 
+| Rules Page          |    H     |      1hr       |               | 
+| Total               |    H     |      26hrs     |               | 
+
+| Component            | Priority | Estimated Time | Time Invested | 
+| -------------------- | :------: | :------------: | :-----------: | 
+| Authentication       |    M     |      4hrs      |               | 
+| Multiple game modes  |    M     |      3hrs      |               | 
+| Graphing             |    M     |      4hrs      |               | 
+| Animations           |    L     |      4hrs      |               | 
+| Animation Settings   |    L     |      2hrs      |               | 
+| Total                |    H     |      17hrs     |               | 
+
 ## Wireframes
 
 Wireframes are forthcoming.
