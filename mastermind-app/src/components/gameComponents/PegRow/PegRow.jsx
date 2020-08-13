@@ -2,9 +2,15 @@ import React from 'react'
 import { Grid, Cell } from 'styled-css-grid'
 import CodePeg from '../CodePeg/CodePeg'
 
-const PegRow = () => {
+const PegRow = ({ pegs, selectPeg, selected, active }) => {
 
-    const codePegs = [1, 2, 3, 4].map((el, i) => <CodePeg key={i} />)
+    const codePegs = pegs.codePegs.map((color, i) =>
+        <CodePeg
+            color={color}
+            key={i}
+            onClick={() => active ? selectPeg(i) : null}
+            selected={active && selected === i}
+        />)
     return (
         <Grid columns={6}>
             <Cell width={2}>

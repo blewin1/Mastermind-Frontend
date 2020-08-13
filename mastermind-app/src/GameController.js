@@ -1,18 +1,23 @@
-class GameController {
+export default class GameController {
     rows = [];
     activeRow = 0;
     numColors = 6;
     numPegs = 4;
     code = [];
+    numRows = 12;
+    result = null;
     constructor(gameToLoad) {
         if (gameToLoad) {
             this.loadGame(gameToLoad);
         }
     }
+    get currentRow() {
+        return this.rows[this.activeRow];
+    }
     newGame() {
         this.rows = [];
         this.activeRow = 0;
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < this.numRows; i++) {
             let codePegs = new Array(this.numPegs).fill(null);
             this.rows.push({ codePegs });
         }
@@ -72,17 +77,30 @@ class GameController {
 
         //Fill in the keyPegs for the row
         this.rows[this.activeRow].keyPegs = keyPegs;
+    }
 
-        //Increment active row
-        this.activeRow++;
+    submitRow() {
+        this.checkActiveRow();
+
+        if (this.checkForWin()) {
+            this.result = "WIN";
+        } else if (this.activeRow >= this.numRows - 1) {
+            this.result = "LOSE";
+        } else {
+            this.activeRow++;
+        }
+    }
+
+    checkForWin() {
+        return this.rows[this.activeRow].keyPegs.every((el) => el === 2);
     }
 }
 
-mastermind = new GameController();
-mastermind.newGame();
+// mastermind = new GameController();
+// mastermind.newGame();
 
-mastermind.rows[0].codePegs = [2, 2, 1, 1];
+// mastermind.rows[0].codePegs = [2, 2, 1, 1];
 
-console.log(mastermind.code);
-mastermind.checkActiveRow();
-console.log(mastermind.rows[0]);
+// console.log(mastermind.code);
+// mastermind.checkActiveRow();
+// console.log(mastermind.rows[0]);
