@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 const CodePeg = styled.div`
@@ -6,6 +5,7 @@ const CodePeg = styled.div`
     width: 20px;
     border-radius: 100px;
     border: 1px outset black;
+    color: white;
     background-color: ${props => {
         switch (props.color) {
             case 0:

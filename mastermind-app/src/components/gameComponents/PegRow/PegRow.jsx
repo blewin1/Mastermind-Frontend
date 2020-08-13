@@ -1,8 +1,12 @@
 import React from 'react'
 import { Grid, Cell } from 'styled-css-grid'
 import CodePeg from '../CodePeg/CodePeg'
+import KeyPegs from '../KeyPegs/KeyPegs'
+import { Button } from '@bootstrap-styled/v4'
 
-const PegRow = ({ pegs, selectPeg, selected, active }) => {
+const PegRow = ({ pegs, selectPeg, selected, active, submitRow }) => {
+
+    const rowFull = active ? pegs.codePegs.every(el => el != null) : false;
 
     const codePegs = pegs.codePegs.map((color, i) =>
         <CodePeg
@@ -13,8 +17,9 @@ const PegRow = ({ pegs, selectPeg, selected, active }) => {
         />)
     return (
         <Grid columns={6}>
-            <Cell width={2}>
-                KeyPegs
+            <Cell left={2}>
+                {rowFull ? <Button size='sm' onClick={submitRow}>S</Button> :
+                    <KeyPegs pegs={pegs.keyPegs} />}
             </Cell>
             {codePegs}
         </Grid>

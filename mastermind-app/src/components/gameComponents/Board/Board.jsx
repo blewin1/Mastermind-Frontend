@@ -4,19 +4,25 @@ import GameController from '../../../GameController'
 import { useEffect, useState } from 'react'
 import Flex from '../../layout/Flex/Flex'
 import CodePeg from '../CodePeg/CodePeg'
+import { Cell, Grid } from 'styled-css-grid'
+import { Button } from '@bootstrap-styled/v4'
+
 
 const Board = () => {
 
     const [game, setGame] = useState(null);
     const [selected, dispatchSelected] = useReducer(selectedReducer, 0)
-    const [refresh, setRefresh] = useState(true)
+    const [_refresh, setRefresh] = useState(true)
+    // const [result, setResult] = useState(null)
+
+    const refresh = () => setRefresh(r => !r)
 
     function selectedReducer(state, action) {
         switch (action.type) {
             case "NEXT":
-                for (let i = state; i < game.numPegs; i++) {
-                    let j = i % game.numPegs;
-                    if (!game.currentRow.codePegs[j]) return j
+                for (let i = 0; i < game.numPegs; i++) {
+                    let j = (state + i) % game.numPegs;
+                    if (game.currentRow.codePegs[j] == null) return j
                 }
                 return (state + 1) % game.numPegs
             case "SET":
@@ -33,12 +39,24 @@ const Board = () => {
         dispatchSelected({ type: 'SET', value: index })
     }
 
+    const submitRow = () => {
+        game.submitRow()
+        // setResult(game.result)
+
+        setSelected(0)
+        refresh()
+    }
+
+    const newGame = () => {
+        game.newGame()
+        refresh()
+    }
 
     useEffect(() => {
         const g = new GameController()
         g.newGame()
-        g.currentRow.codePegs = [0, 1, 2, 3]
         setGame(g)
+        console.log(g.code)
     }, [])
 
     if (!game) {
@@ -48,7 +66,7 @@ const Board = () => {
     const setColor = color => {
         game.currentRow.codePegs[selected] = color;
         selectNextPeg()
-        setRefresh(r => !r)
+        refresh()
     }
 
     const pegRows = game.rows.map((row, i) =>
@@ -57,7 +75,8 @@ const Board = () => {
             selectPeg={setSelected}
             pegs={row}
             key={i}
-            active={i === game.activeRow}
+            active={!game.result && i === game.activeRow}
+            submitRow={submitRow}
         />)
 
     const colorOptions = Array(game.numColors).fill(null).map((el, i) =>
@@ -68,6 +87,10 @@ const Board = () => {
             clickable
         />)
 
+    const code = game.result ?
+        game.code.map((el, i) => <CodePeg color={el} key={i} />) :
+        Array(game.numPegs).fill(null).map((el, i) => <CodePeg key={i}>?</CodePeg>);
+
 
     return (
         <Flex direction='column-reverse' justifyContent='space-between'>
@@ -75,6 +98,10 @@ const Board = () => {
                 {colorOptions}
             </Flex>
             {pegRows}
+            <Grid columns={6}>
+                <Cell width={2}>{game.result ? <Button onClick={newGame}>New Game</Button> : ''}</Cell>
+                {code}
+            </Grid>
         </Flex>
     )
 }

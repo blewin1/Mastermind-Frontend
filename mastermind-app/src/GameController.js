@@ -3,7 +3,7 @@ export default class GameController {
     activeRow = 0;
     numColors = 6;
     numPegs = 4;
-    code = [];
+    #code = [];
     numRows = 12;
     result = null;
     constructor(gameToLoad) {
@@ -14,15 +14,20 @@ export default class GameController {
     get currentRow() {
         return this.rows[this.activeRow];
     }
+    get code() {
+        return this.#code;
+    }
     newGame() {
+        this.result = null;
         this.rows = [];
         this.activeRow = 0;
         for (let i = 0; i < this.numRows; i++) {
             let codePegs = new Array(this.numPegs).fill(null);
-            this.rows.push({ codePegs });
+            let keyPegs = new Array(this.numPegs).fill(null);
+            this.rows.push({ codePegs, keyPegs });
         }
         for (let i = 0; i < this.numPegs; i++) {
-            this.code.push(Math.floor(Math.random() * this.numColors));
+            this.#code.push(Math.floor(Math.random() * this.numColors));
         }
     }
     loadGame(game) {
@@ -30,7 +35,7 @@ export default class GameController {
         this.activeRow = game.activeRow;
         this.numColors = game.numColors;
         this.numPegs = game.numPegs;
-        this.code = game.code;
+        this.#code = game.code;
     }
     exportGame() {
         return {
@@ -38,7 +43,7 @@ export default class GameController {
             activeRow: this.activeRow,
             numColors: this.numColors,
             numPegs: this.numPegs,
-            code: this.code
+            code: this.#code
         };
     }
     checkActiveRow() {
@@ -48,14 +53,14 @@ export default class GameController {
         const row = [...this.rows[this.activeRow].codePegs];
 
         // count matches of color AND location
-        let exactMatches = this.code.reduce(
+        let exactMatches = this.#code.reduce(
             (total, el, i) => (el == row[i] ? total + 1 : total),
             0
         );
 
         // count matches of just color independant of location
         let totalMatches = 0;
-        this.code.forEach((el) => {
+        this.#code.forEach((el) => {
             let i = row.indexOf(el);
             if (i != -1) {
                 totalMatches++;
@@ -79,7 +84,9 @@ export default class GameController {
         this.rows[this.activeRow].keyPegs = keyPegs;
     }
 
+    // Always check Result after running submitRow
     submitRow() {
+        console.log("Submit Row", this);
         this.checkActiveRow();
 
         if (this.checkForWin()) {
