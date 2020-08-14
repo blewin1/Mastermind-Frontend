@@ -7,14 +7,12 @@ import BootstrapProvider from "@bootstrap-styled/provider";
 
 function App() {
     return (
-        // <div className="App">
         <BootstrapProvider>
             <Grid className="App" columns={1} rows="50px 1fr">
                 <Nav />
                 <Main />
             </Grid>
         </BootstrapProvider>
-        // </div>
     );
 }
 
