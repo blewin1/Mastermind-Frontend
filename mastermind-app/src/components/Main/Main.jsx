@@ -4,11 +4,9 @@ import Board from '../gameComponents/Board/Board'
 
 const Main = () => {
     return (
-        // <main>
         <Switch>
             <Route exact path="/" component={Board} />
         </Switch>
-        // </main>
     )
 }
 
