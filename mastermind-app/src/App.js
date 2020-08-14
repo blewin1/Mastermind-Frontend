@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Grid, Cell } from "styled-css-grid";
+import { Grid } from "styled-css-grid";
 import Nav from "./components/Nav/Nav";
 import Main from "./components/Main/Main";
 import BootstrapProvider from "@bootstrap-styled/provider";

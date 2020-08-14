@@ -21,6 +21,7 @@ export default class GameController {
         this.result = null;
         this.rows = [];
         this.activeRow = 0;
+        this.#code = [];
         for (let i = 0; i < this.numRows; i++) {
             let codePegs = new Array(this.numPegs).fill(null);
             let keyPegs = new Array(this.numPegs).fill(null);
@@ -54,7 +55,7 @@ export default class GameController {
 
         // count matches of color AND location
         let exactMatches = this.#code.reduce(
-            (total, el, i) => (el == row[i] ? total + 1 : total),
+            (total, el, i) => (el === row[i] ? total + 1 : total),
             0
         );
 
@@ -62,7 +63,7 @@ export default class GameController {
         let totalMatches = 0;
         this.#code.forEach((el) => {
             let i = row.indexOf(el);
-            if (i != -1) {
+            if (i !== -1) {
                 totalMatches++;
                 row.splice(i, 1);
             }

@@ -49,14 +49,15 @@ const Board = () => {
 
     const newGame = () => {
         game.newGame()
+        console.log(game.code)
         refresh()
     }
 
     useEffect(() => {
         const g = new GameController()
         g.newGame()
-        setGame(g)
         console.log(g.code)
+        setGame(g)
     }, [])
 
     if (!game) {
