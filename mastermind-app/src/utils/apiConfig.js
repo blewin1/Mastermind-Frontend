@@ -1,6 +1,6 @@
 let apiUrl;
 const apiUrls = {
-    production: "heroku",
+    production: "https://mastermind-app-api.herokuapp.com",
     development: "http://localhost:3000"
 };
 
