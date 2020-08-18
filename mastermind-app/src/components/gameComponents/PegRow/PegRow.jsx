@@ -14,6 +14,7 @@ const PegRow = ({ pegs, selectPeg, selected, active, submitRow }) => {
             key={i}
             onClick={() => active ? selectPeg(i) : null}
             selected={active && selected === i}
+            clickable={active}
         />)
     return (
         <Grid columns={6}>

@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react'
 import PegRow from '../PegRow/PegRow'
-import GameController from '../../../GameController'
+import GameController from '../../../utils/GameController'
 import { useEffect, useState } from 'react'
 import Flex from '../../layout/Flex/Flex'
 import CodePeg from '../CodePeg/CodePeg'
@@ -90,7 +90,7 @@ const Board = () => {
 
     const code = game.result ?
         game.code.map((el, i) => <CodePeg color={el} key={i} />) :
-        Array(game.numPegs).fill(null).map((el, i) => <CodePeg key={i}>?</CodePeg>);
+        Array(game.numPegs).fill(null).map((el, i) => <CodePeg color={-1} key={i}>?</CodePeg>);
 
 
     return (

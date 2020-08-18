@@ -87,7 +87,6 @@ export default class GameController {
 
     // Always check Result after running submitRow
     submitRow() {
-        console.log("Submit Row", this);
         this.checkActiveRow();
 
         if (this.checkForWin()) {
