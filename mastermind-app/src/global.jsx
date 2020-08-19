@@ -52,7 +52,7 @@ export const GlobalStyles = createGlobalStyle`
     border: 1px solid lightslategray;
   }
   
-  form button {
+  button {
     margin-top: 10px;
     color: white;
     background-color: brown;

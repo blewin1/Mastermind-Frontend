@@ -8,13 +8,15 @@ import { Button } from '@bootstrap-styled/v4'
 import { UserContext } from '../../../utils/userContext'
 import apiUrl from '../../../utils/apiConfig'
 import axios from 'axios'
+import Modal from '../../layout/Modal/Modal'
 
 
-const Board = () => {
+const Board = ({ history }) => {
 
     const [game, setGame] = useState(null);
     const [selected, dispatchSelected] = useReducer(selectedReducer, 0)
     const [_refresh, setRefresh] = useState(true)
+    const [closeModal, setCloseModal] = useState(true)
 
     const { user } = useContext(UserContext)
 
@@ -49,7 +51,7 @@ const Board = () => {
                 const gameData = await axios({
                     url: `${apiUrl}/users/${user.id}`,
                     method: 'put',
-                    headers: { 'Authenticate': token },
+                    headers: { Authorization: `Bearer ${token}` },
                     data: { user: { game_data: game.export() } }
                 });
                 console.log(gameData)
@@ -63,6 +65,12 @@ const Board = () => {
         game.submitRow()
         if (user.id) saveGame()
         setSelected(0)
+        if (game.result) {
+            setCloseModal(false)
+
+            //updateGameStats()
+            //openGameOver
+        }
         refresh()
     }
 
@@ -74,10 +82,14 @@ const Board = () => {
 
     useEffect(() => {
         const g = new GameController()
-        g.newGame()
+        if (user.id) {
+            g.load(user.game_data)
+        } else {
+            g.newGame()
+        }
         console.log(g.code)
         setGame(g)
-    }, [])
+    }, [user])
 
     if (!game) {
         return <p>Loading...</p>
@@ -113,16 +125,32 @@ const Board = () => {
 
 
     return (
-        <Flex direction='column-reverse' justifyContent='space-between'>
-            <Flex justifyContent='space-between'>
-                {colorOptions}
+        <>
+            {game.result && !closeModal ?
+                <Modal close={() => setCloseModal(true)}>
+                    {game.result === 'WIN' ?
+                        <>
+                            <h2>You Won!</h2>
+                            <h3>{`${game.activeRow} rows to complete`}</h3>
+                        </>
+                        : <h2>You Lost.</h2>
+                    }
+                    <button onClick={() => history.push('/stats')}>View Full Stats</button>
+                    <button onClick={newGame}>Play Again</button>
+                </Modal>
+                : ''
+            }
+            <Flex direction='column-reverse' justifyContent='space-between'>
+                <Flex justifyContent='space-between'>
+                    {colorOptions}
+                </Flex>
+                {pegRows}
+                <Grid columns={6}>
+                    <Cell width={2}>{game.result ? <Button onClick={newGame}>New Game</Button> : ''}</Cell>
+                    {code}
+                </Grid>
             </Flex>
-            {pegRows}
-            <Grid columns={6}>
-                <Cell width={2}>{game.result ? <Button onClick={newGame}>New Game</Button> : ''}</Cell>
-                {code}
-            </Grid>
-        </Flex>
+        </>
     )
 }
 

@@ -32,20 +32,23 @@ export default class GameController {
         }
     }
     load(game) {
+        game = JSON.parse(game);
         this.rows = game.rows;
         this.activeRow = game.activeRow;
         this.numColors = game.numColors;
         this.numPegs = game.numPegs;
         this.#code = game.code;
+        this.result = game.result;
     }
     export() {
-        return {
+        return JSON.stringify({
             rows: this.rows,
             activeRow: this.activeRow,
             numColors: this.numColors,
             numPegs: this.numPegs,
-            code: this.#code
-        };
+            code: this.#code,
+            result: this.result
+        });
     }
     checkActiveRow() {
         // Return false if row was not filled in.
@@ -93,9 +96,8 @@ export default class GameController {
             this.result = "WIN";
         } else if (this.activeRow >= this.numRows - 1) {
             this.result = "LOSE";
-        } else {
-            this.activeRow++;
         }
+        this.activeRow++;
     }
 
     checkForWin() {
