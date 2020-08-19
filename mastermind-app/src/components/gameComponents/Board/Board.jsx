@@ -214,7 +214,7 @@ const Board = ({ history, game, setGame }) => {
                 <Modal close={() => setCloseModal(true)}>
                     {game.result === 'WIN' ?
                         <>
-                            <h2>Congrats, You Won!</h2>
+                            <h2>Congrats,{user ? ` ${user.firstname}. ` : ''} You Won!</h2>
                             <h3>{`Completed in ${game.activeRow} rows.`}</h3>
                         </>
                         : <h2>Darn, You Lost.</h2>
