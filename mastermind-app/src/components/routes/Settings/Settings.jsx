@@ -45,6 +45,10 @@ const Settings = () => {
                     <input type="radio" value="5x8" checked={current === '5x8'} onChange={handleChange} />
                     Hard Mode: 5 pegs, 8 colors.
                 </label>
+                <label>
+                    <input type="radio" value="6x8" checked={current === '6x8'} onChange={handleChange} />
+                    Harder Mode: 6 pegs, 8 colors.
+                </label>
             </form>
             <Link to="/"><button>Back to Game</button></Link>
         </Flex>

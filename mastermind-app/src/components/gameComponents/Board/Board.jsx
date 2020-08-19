@@ -150,10 +150,7 @@ const Board = ({ history, game, setGame }) => {
     const newGame = () => {
         setMode(game)
         game.newGame()
-        console.log(game.code)
-
         if (user) saveGame(game)
-
         refresh()
     }
 
@@ -171,7 +168,6 @@ const Board = ({ history, game, setGame }) => {
             g.newGame()
             if (user) saveGame(g)
         }
-        console.log(g.code)
         setGame(g)
     }, [user])
 
