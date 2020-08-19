@@ -1,11 +1,13 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect, useState, useContext } from 'react'
 import PegRow from '../PegRow/PegRow'
 import GameController from '../../../utils/GameController'
-import { useEffect, useState } from 'react'
 import Flex from '../../layout/Flex/Flex'
 import CodePeg from '../CodePeg/CodePeg'
 import { Cell, Grid } from 'styled-css-grid'
 import { Button } from '@bootstrap-styled/v4'
+import { UserContext } from '../../../utils/userContext'
+import apiUrl from '../../../utils/apiConfig'
+import axios from 'axios'
 
 
 const Board = () => {
@@ -13,7 +15,8 @@ const Board = () => {
     const [game, setGame] = useState(null);
     const [selected, dispatchSelected] = useReducer(selectedReducer, 0)
     const [_refresh, setRefresh] = useState(true)
-    // const [result, setResult] = useState(null)
+
+    const { user } = useContext(UserContext)
 
     const refresh = () => setRefresh(r => !r)
 
@@ -39,10 +42,26 @@ const Board = () => {
         dispatchSelected({ type: 'SET', value: index })
     }
 
+    const saveGame = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const gameData = await axios({
+                    url: `${apiUrl}/users/${user.id}`,
+                    method: 'put',
+                    headers: { 'Authenticate': token },
+                    data: { user: { game_data: game.export() } }
+                });
+                console.log(gameData)
+            }
+        } catch (err) {
+            console.error("Error saving game:", err);
+        }
+    }
+
     const submitRow = () => {
         game.submitRow()
-        // setResult(game.result)
-
+        if (user.id) saveGame()
         setSelected(0)
         refresh()
     }

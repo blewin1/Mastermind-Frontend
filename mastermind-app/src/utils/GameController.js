@@ -31,14 +31,14 @@ export default class GameController {
             this.#code.push(Math.floor(Math.random() * this.numColors));
         }
     }
-    loadGame(game) {
+    load(game) {
         this.rows = game.rows;
         this.activeRow = game.activeRow;
         this.numColors = game.numColors;
         this.numPegs = game.numPegs;
         this.#code = game.code;
     }
-    exportGame() {
+    export() {
         return {
             rows: this.rows,
             activeRow: this.activeRow,

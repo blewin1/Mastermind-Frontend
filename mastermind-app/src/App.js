@@ -17,13 +17,19 @@ function App() {
 
     useEffect(() => {
         const autoLogin = async () => {
-            const token = localStorage.getItem("token");
-            if (token) {
-                const res = await axios({
-                    url: `${apiUrl}/users/auto_login`,
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setUser(res.data.user);
+            try {
+                const token = localStorage.getItem("token");
+                console.log("Auto Login.  Token:", token);
+                if (token) {
+                    const res = await axios({
+                        url: `${apiUrl}/users/auto_login`,
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    console.log("Auto Login response:", res.data);
+                    setUser(res.data.user);
+                }
+            } catch (err) {
+                console.error(err);
             }
         };
         autoLogin();
