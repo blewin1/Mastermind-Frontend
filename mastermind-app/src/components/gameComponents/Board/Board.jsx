@@ -19,7 +19,7 @@ const Board = ({ history, game, setGame }) => {
     const [_refresh, setRefresh] = useState(true)
     const [closeModal, setCloseModal] = useState(true)
 
-    const { user, setUser } = useContext(UserContext)
+    const { user, setUser, nonLoginMode } = useContext(UserContext)
 
     const refresh = () => setRefresh(r => !r)
 
@@ -72,10 +72,70 @@ const Board = ({ history, game, setGame }) => {
                     headers: { Authorization: `Bearer ${token}` },
                     data: { user: { game_data: _game.export() } }
                 });
-                console.log(gameData)
             }
         } catch (err) {
             console.error("Error saving game:", err);
+        }
+    }
+
+    const getModeString = (numPegs, numColors) => `${numPegs}x${numColors}`
+
+    const updateGameStats = async (game) => {
+        if (!game.result) {
+            console.error('Do not set gamestats on unfinished game!')
+            return
+        } else if (!user) {
+            console.error('Attempted stats update when not logged in')
+            return
+        }
+        const gameMode = getModeString(game.numPegs, game.numColors)
+        console.log(`Mode: ${gameMode}`)
+        const stat = user.game_stats.find(el => el.mode === gameMode)
+        console.log(`stat: `, stat)
+        if (!stat) {
+            console.log('create game stats')
+            const gs = {
+                mode: gameMode,
+                wins: game.result === 'WIN' ? 1 : 0,
+                losses: game.result === 'LOSE' ? 1 : 0,
+                avg_rows: game.activeRow,
+                least_rows: game.activeRow,
+                user_id: user.id
+            }
+            try {
+                const res = await axios.post(`${apiUrl}/game_stats`, { game_stat: gs })
+                if (res.data.status === 201) {
+                    console.log('Game Stat Created! ', res.data)
+                } else {
+                    console.error('Error creating game stat')
+                }
+            } catch (err) {
+                console.error(err)
+            }
+
+        } else {
+            console.log('update game stats', stat)
+            const gs = {};
+            if (game.result === 'WIN') gs.wins = stat.wins + 1;
+            else gs.losses = stat.losses + 1;
+
+            if (game.activeRow < stat.least_rows) gs.least_rows = game.activeRow;
+            else gs.least_rows = stat.least_rows;
+
+            const totalRows = stat.wins + stat.losses;
+            gs.avg_rows = ((stat.avg_rows * totalRows) + game.activeRow) / (totalRows + 1)
+
+            console.log('UPDATED STAT', gs)
+            try {
+                const res = await axios.put(`${apiUrl}/game_stats/${stat.id}`, { game_stat: gs })
+                if (res.data.status === 200) {
+                    console.log('Game Stat Created! ', res.data)
+                } else {
+                    console.error('Error updating game stat')
+                }
+            } catch (err) {
+                console.error(err)
+            }
         }
     }
 
@@ -84,7 +144,7 @@ const Board = ({ history, game, setGame }) => {
         if (game.result) {
             setCloseModal(false)
 
-            // updateGameStats()
+            updateGameStats(game)
 
         }
         setSelected(0)
@@ -96,10 +156,22 @@ const Board = ({ history, game, setGame }) => {
         }
     }
 
+    const setMode = (game) => {
+        if (!game) return
+        const mode = user ? user.game_type : nonLoginMode
+        console.log('set mode ', mode)
+        const m = mode.split('x')
+        console.log(m)
+        game.numPegs = parseInt(m[0])
+        game.numColors = parseInt(m[1])
+    }
+
     const newGame = () => {
-        // game.numPegs = 5
-        // game.numColors = 8
+        setMode(game)
+        console.log(game.numColors)
         game.newGame()
+        if (user) saveGame(game)
+
         console.log(game.code)
         refresh()
     }
@@ -107,10 +179,16 @@ const Board = ({ history, game, setGame }) => {
     useEffect(() => {
         const g = new GameController()
         if (user && user.game_data) {
-            console.log('should load gamedata')
             g.load(user.game_data)
+            if (g.activeRow === 0 && getModeString(g.numPegs, g.numColors) !== user.game_type) {
+                setMode(g)
+                g.newGame()
+                saveGame(g)
+            }
         } else {
+            setMode(g)
             g.newGame()
+            if (user) saveGame(g)
         }
         console.log(g.code)
         setGame(g)
