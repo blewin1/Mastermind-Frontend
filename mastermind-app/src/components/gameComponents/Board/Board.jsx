@@ -26,13 +26,11 @@ const Board = ({ history, game, setGame }) => {
     const reload = async () => {
         try {
             const token = localStorage.getItem("token");
-            console.log("Auto Login.  Token:", token);
             if (token) {
                 const res = await axios({
                     url: `${apiUrl}/users/auto_login`,
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                console.log("reload:", JSON.parse(res.data.user));
                 setUser(JSON.parse(res.data.user));
             }
         } catch (err) {
@@ -101,17 +99,11 @@ const Board = ({ history, game, setGame }) => {
             }
             try {
                 const res = await axios.post(`${apiUrl}/game_stats`, { game_stat: gs })
-                if (res.data.status === 201) {
-                    console.log('Game Stat Created! ', res.data)
-                } else {
-                    console.error('Error creating game stat')
-                }
             } catch (err) {
                 console.error(err)
             }
 
         } else {
-            console.log('update game stats', stat)
             const gs = {};
             if (game.result === 'WIN') gs.wins = stat.wins + 1;
             else gs.losses = stat.losses + 1;
@@ -122,14 +114,8 @@ const Board = ({ history, game, setGame }) => {
             const totalRows = stat.wins + stat.losses;
             gs.avg_rows = ((stat.avg_rows * totalRows) + game.activeRow) / (totalRows + 1)
 
-            console.log('UPDATED STAT', gs)
             try {
                 const res = await axios.put(`${apiUrl}/game_stats/${stat.id}`, { game_stat: gs })
-                if (res.data.status === 200) {
-                    console.log('Game Stat Created! ', res.data)
-                } else {
-                    console.error('Error updating game stat')
-                }
             } catch (err) {
                 console.error(err)
             }
@@ -156,20 +142,18 @@ const Board = ({ history, game, setGame }) => {
     const setMode = (game) => {
         if (!game) return
         const mode = user ? user.game_type : nonLoginMode
-        console.log('set mode ', mode)
         const m = mode.split('x')
-        console.log(m)
         game.numPegs = parseInt(m[0])
         game.numColors = parseInt(m[1])
     }
 
     const newGame = () => {
         setMode(game)
-        console.log(game.numColors)
         game.newGame()
+        console.log(game.code)
+
         if (user) saveGame(game)
 
-        console.log(game.code)
         refresh()
     }
 

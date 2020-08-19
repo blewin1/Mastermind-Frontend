@@ -3,6 +3,7 @@ import { UserContext } from "../../../utils/userContext";
 import Flex from '../../layout/Flex/Flex';
 import Axios from 'axios';
 import apiUrl from '../../../utils/apiConfig';
+import { Link } from 'react-router-dom';
 
 const Settings = () => {
 
@@ -34,7 +35,7 @@ const Settings = () => {
     }
 
     return (
-        <Flex direction="row" alignItems="center">
+        <Flex direction="column" alignItems="center">
             <form>
                 <label>
                     <input type="radio" value="4x6" checked={current === '4x6'} onChange={handleChange} />
@@ -45,6 +46,7 @@ const Settings = () => {
                     Hard Mode: 5 pegs, 8 colors.
                 </label>
             </form>
+            <Link to="/"><button>Back to Game</button></Link>
         </Flex>
     )
 }

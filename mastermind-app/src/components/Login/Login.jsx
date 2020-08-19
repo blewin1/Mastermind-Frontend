@@ -38,7 +38,7 @@ const Login = ({ closeLogin }) => {
             setUser(JSON.parse(res.data.user))
             localStorage.setItem("token", res.data.token)
         } else {
-            console.log('Invalid username or password')
+            console.error('Invalid username or password')
         }
     }
 
@@ -49,7 +49,7 @@ const Login = ({ closeLogin }) => {
                 setUser(res.data.user)
                 localStorage.setItem("token", res.data.token)
             } else {
-                console.log('Something went wrong, try again')
+                console.error('Something went wrong, try again')
             }
         } catch (err) {
             console.error(err)

@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
+
   html, body {
     margin: 0;
     padding: 0;
@@ -12,12 +13,13 @@ export const GlobalStyles = createGlobalStyle`
     align-items: center;
     background-color: #A37844;
     color: #EFFFFA;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     height: 100vh;
     text-rendering: optimizeLegibility;
   }
   .App {
     height: 100vh;
+    font-family: 'Varela Round', sans-serif;
   }
   h1 {
     font-size: 2rem;
@@ -57,6 +59,7 @@ export const GlobalStyles = createGlobalStyle`
     background-color: brown;
     padding: .5em
     cursor: pointer;
+    font-family: 'Varela Round', sans-serif;
   }
 
 

@@ -19,7 +19,6 @@ function App() {
         const autoLogin = async () => {
             try {
                 const token = localStorage.getItem("token");
-                console.log("Auto Login.  Token:", token);
                 if (token) {
                     const res = await axios({
                         url: `${apiUrl}/users/auto_login`,
