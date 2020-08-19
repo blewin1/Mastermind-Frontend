@@ -18,6 +18,7 @@ const Nav = () => {
         <>
             <StyledNav>
                 <Burger open={menuOpen} setOpen={setMenuOpen} />
+                <h1>Mastermind</h1>
                 {user ?
                     <Link onClick={() => setMenuOpen(false)} to="/profile">
                         <h2>{user.firstname}</h2>

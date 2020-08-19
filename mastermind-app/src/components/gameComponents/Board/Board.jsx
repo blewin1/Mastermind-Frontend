@@ -215,7 +215,7 @@ const Board = ({ history, game, setGame }) => {
                     {game.result === 'WIN' ?
                         <>
                             <h2>Congrats, You Won!</h2>
-                            <h3>{`${game.activeRow} rows to complete`}</h3>
+                            <h3>{`Completed in ${game.activeRow} rows.`}</h3>
                         </>
                         : <h2>Darn, You Lost.</h2>
                     }

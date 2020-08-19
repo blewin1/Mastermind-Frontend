@@ -6,4 +6,10 @@ export default styled.div`
     align-items: center;
     padding: 0 10px;
     background-color: brown;
+
+    @media (max-width: 470px) {
+        h1{
+            font-size: 20px;
+        };
+      }
 `
