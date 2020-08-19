@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Cell } from 'styled-css-grid'
 import CodePeg from '../CodePeg/CodePeg'
 import KeyPegs from '../KeyPegs/KeyPegs'
-import { Button } from '@bootstrap-styled/v4'
+import { CheckSquareFill } from '@styled-icons/bootstrap/CheckSquareFill'
 
 const PegRow = ({ pegs, selectPeg, selected, active, submitRow }) => {
 
@@ -19,7 +19,7 @@ const PegRow = ({ pegs, selectPeg, selected, active, submitRow }) => {
     return (
         <Grid columns={pegs.codePegs.length + 1}>
             <Cell>
-                {rowFull ? <button size='sm' onClick={submitRow}>S</button> :
+                {rowFull ? <CheckSquareFill title="Submit Row" onClick={submitRow}>S</CheckSquareFill> :
                     <KeyPegs pegs={pegs.keyPegs} />}
             </Cell>
             {codePegs}

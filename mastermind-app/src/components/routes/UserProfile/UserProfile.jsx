@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { UserContext } from '../../../utils/userContext'
+import Flex from '../../layout/Flex/Flex';
 
 const UserProfile = ({ history }) => {
     const { setUser, user } = useContext(UserContext);
@@ -13,11 +14,11 @@ const UserProfile = ({ history }) => {
     if (!user) history.push('/')
 
     return (
-        <div>
+        <Flex direction="column" alignItems="center">
             <h2>{user.firstname}</h2>
             <h3>{user.email}</h3>
-            <h3 onClick={logout}>Log Out</h3>
-        </div>
+            <button><h3 onClick={logout}>Log Out</h3></button>
+        </Flex>
     )
 }
 

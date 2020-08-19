@@ -4,16 +4,16 @@ import GameController from '../../../utils/GameController'
 import Flex from '../../layout/Flex/Flex'
 import CodePeg from '../CodePeg/CodePeg'
 import { Cell, Grid } from 'styled-css-grid'
-import { Button } from '@bootstrap-styled/v4'
 import { UserContext } from '../../../utils/userContext'
 import apiUrl from '../../../utils/apiConfig'
 import axios from 'axios'
 import Modal from '../../layout/Modal/Modal'
 import { withRouter } from 'react-router'
+import { Repeat } from '@styled-icons/evaicons-solid/Repeat'
+
 
 
 const Board = ({ history, game, setGame }) => {
-    console.log('HISTORY', history)
 
     const [selected, dispatchSelected] = useReducer(selectedReducer, 0)
     const [_refresh, setRefresh] = useState(true)
@@ -160,7 +160,7 @@ const Board = ({ history, game, setGame }) => {
                         </>
                         : <h2>Darn, You Lost.</h2>
                     }
-                    {user.id ?
+                    {user ?
                         <button onClick={() => history.push('/stats')}>View Full Stats</button>
                         : <h4>Sign in to keep track of stats!</h4>
                     }
@@ -176,7 +176,7 @@ const Board = ({ history, game, setGame }) => {
                     </Flex>
                     {pegRows}
                     <Grid columns={game.numPegs + 1}>
-                        <Cell>{game.result ? <button onClick={newGame}>New Game</button> : ''}</Cell>
+                        <Cell>{game.result ? <Repeat title="New Game" onClick={newGame} /> : ''}</Cell>
                         {code}
                     </Grid>
                 </Flex>

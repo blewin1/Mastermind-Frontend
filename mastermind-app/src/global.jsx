@@ -53,11 +53,12 @@ export const GlobalStyles = createGlobalStyle`
   }
   
   button {
-    margin-top: 10px;
     color: white;
     background-color: brown;
     padding: .5em
+    cursor: pointer;
   }
+
 
   .link-btn {
     font-size: 14px;
@@ -72,11 +73,17 @@ export const GlobalStyles = createGlobalStyle`
     color: red;
   }
 
+  svg {
+    cursor: pointer;
+  }
+
   .board {
     max-height: 640px;
     max-width: 360px;
     border: 1px solid black;
     padding: 10px;
     background-color: burlywood;
+    color: brown;
+    font-weight: bold;
   }
   `
