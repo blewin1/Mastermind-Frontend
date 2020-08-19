@@ -89,11 +89,8 @@ const Board = ({ history, game, setGame }) => {
             return
         }
         const gameMode = getModeString(game.numPegs, game.numColors)
-        console.log(`Mode: ${gameMode}`)
         const stat = user.game_stats.find(el => el.mode === gameMode)
-        console.log(`stat: `, stat)
         if (!stat) {
-            console.log('create game stats')
             const gs = {
                 mode: gameMode,
                 wins: game.result === 'WIN' ? 1 : 0,
