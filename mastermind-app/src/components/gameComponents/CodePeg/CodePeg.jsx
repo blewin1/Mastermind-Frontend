@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'magenta', 'white']
+const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'magenta', 'white', 'black']
 
 const CodePeg = styled.div`
     height: 20px;

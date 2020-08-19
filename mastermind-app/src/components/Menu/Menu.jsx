@@ -15,7 +15,7 @@ const Menu = ({ open, setOpen }) => {
             <Link onClick={() => setOpen(false)} to="/settings">Settings</Link>
             <Link onClick={() => setOpen(false)} to="/stats">Game Stats</Link>
             <Link onClick={() => setOpen(false)} to="/rules">Game Rules</Link>
-            {user.id ?
+            {user ?
                 <Link onClick={() => setOpen(false)} to="/profile">My Profile</Link>
                 : ''
             }

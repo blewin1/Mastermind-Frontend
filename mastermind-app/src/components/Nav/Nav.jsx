@@ -18,7 +18,7 @@ const Nav = () => {
         <>
             <StyledNav>
                 <Burger open={menuOpen} setOpen={setMenuOpen} />
-                {user.id ?
+                {user ?
                     <Link onClick={() => setMenuOpen(false)} to="/profile">
                         <h2>{user.firstname}</h2>
                     </Link>

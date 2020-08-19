@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { UserContext } from "./utils/userContext";
 import "./App.css";
 import { Grid } from "styled-css-grid";
@@ -25,8 +25,7 @@ function App() {
                         url: `${apiUrl}/users/auto_login`,
                         headers: { Authorization: `Bearer ${token}` }
                     });
-                    console.log("Auto Login response:", res.data);
-                    setUser(res.data.user);
+                    setUser(JSON.parse(res.data.user));
                 }
             } catch (err) {
                 console.error(err);

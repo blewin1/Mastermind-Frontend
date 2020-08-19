@@ -5,12 +5,12 @@ const UserProfile = ({ history }) => {
     const { setUser, user } = useContext(UserContext);
 
     const logout = () => {
-        setUser({});
+        setUser(null);
         localStorage.setItem("token", null);
         history.push('/')
     }
 
-    if (!user.id) history.push('/')
+    if (!user) history.push('/')
 
     return (
         <div>

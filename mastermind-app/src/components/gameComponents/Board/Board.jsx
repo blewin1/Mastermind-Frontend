@@ -9,18 +9,36 @@ import { UserContext } from '../../../utils/userContext'
 import apiUrl from '../../../utils/apiConfig'
 import axios from 'axios'
 import Modal from '../../layout/Modal/Modal'
+import { withRouter } from 'react-router'
 
 
-const Board = ({ history }) => {
+const Board = ({ history, game, setGame }) => {
+    console.log('HISTORY', history)
 
-    const [game, setGame] = useState(null);
     const [selected, dispatchSelected] = useReducer(selectedReducer, 0)
     const [_refresh, setRefresh] = useState(true)
     const [closeModal, setCloseModal] = useState(true)
 
-    const { user } = useContext(UserContext)
+    const { user, setUser } = useContext(UserContext)
 
     const refresh = () => setRefresh(r => !r)
+
+    const reload = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            console.log("Auto Login.  Token:", token);
+            if (token) {
+                const res = await axios({
+                    url: `${apiUrl}/users/auto_login`,
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                console.log("reload:", JSON.parse(res.data.user));
+                setUser(JSON.parse(res.data.user));
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     function selectedReducer(state, action) {
         switch (action.type) {
@@ -44,7 +62,7 @@ const Board = ({ history }) => {
         dispatchSelected({ type: 'SET', value: index })
     }
 
-    const saveGame = async () => {
+    const saveGame = async (_game) => {
         try {
             const token = localStorage.getItem("token");
             if (token) {
@@ -52,7 +70,7 @@ const Board = ({ history }) => {
                     url: `${apiUrl}/users/${user.id}`,
                     method: 'put',
                     headers: { Authorization: `Bearer ${token}` },
-                    data: { user: { game_data: game.export() } }
+                    data: { user: { game_data: _game.export() } }
                 });
                 console.log(gameData)
             }
@@ -61,20 +79,26 @@ const Board = ({ history }) => {
         }
     }
 
-    const submitRow = () => {
+    const submitRow = async () => {
         game.submitRow()
-        if (user.id) saveGame()
-        setSelected(0)
         if (game.result) {
             setCloseModal(false)
 
-            //updateGameStats()
-            //openGameOver
+            // updateGameStats()
+
         }
-        refresh()
+        setSelected(0)
+        if (user) {
+            await saveGame(game)
+            reload()
+        } else {
+            refresh()
+        }
     }
 
     const newGame = () => {
+        // game.numPegs = 5
+        // game.numColors = 8
         game.newGame()
         console.log(game.code)
         refresh()
@@ -82,7 +106,8 @@ const Board = ({ history }) => {
 
     useEffect(() => {
         const g = new GameController()
-        if (user.id) {
+        if (user && user.game_data) {
+            console.log('should load gamedata')
             g.load(user.game_data)
         } else {
             g.newGame()
@@ -130,28 +155,34 @@ const Board = ({ history }) => {
                 <Modal close={() => setCloseModal(true)}>
                     {game.result === 'WIN' ?
                         <>
-                            <h2>You Won!</h2>
+                            <h2>Congrats, You Won!</h2>
                             <h3>{`${game.activeRow} rows to complete`}</h3>
                         </>
-                        : <h2>You Lost.</h2>
+                        : <h2>Darn, You Lost.</h2>
                     }
-                    <button onClick={() => history.push('/stats')}>View Full Stats</button>
+                    {user.id ?
+                        <button onClick={() => history.push('/stats')}>View Full Stats</button>
+                        : <h4>Sign in to keep track of stats!</h4>
+                    }
+
                     <button onClick={newGame}>Play Again</button>
                 </Modal>
                 : ''
             }
-            <Flex direction='column-reverse' justifyContent='space-between'>
-                <Flex justifyContent='space-between'>
-                    {colorOptions}
+            <Flex>
+                <Flex className="board" direction='column-reverse' justifyContent='space-between'>
+                    <Flex justifyContent='space-between'>
+                        {colorOptions}
+                    </Flex>
+                    {pegRows}
+                    <Grid columns={game.numPegs + 1}>
+                        <Cell>{game.result ? <button onClick={newGame}>New Game</button> : ''}</Cell>
+                        {code}
+                    </Grid>
                 </Flex>
-                {pegRows}
-                <Grid columns={6}>
-                    <Cell width={2}>{game.result ? <Button onClick={newGame}>New Game</Button> : ''}</Cell>
-                    {code}
-                </Grid>
             </Flex>
         </>
     )
 }
 
-export default Board
+export default withRouter(Board)

@@ -13,7 +13,7 @@ const Login = ({ closeLogin }) => {
         // setError('');
     }, [])
 
-    const { setUser } = useContext(UserContext)
+    const { setUser, user } = useContext(UserContext)
 
     const handleChange = (event) => {
         setInput({
@@ -35,7 +35,7 @@ const Login = ({ closeLogin }) => {
     const login = async () => {
         const res = await axios.post(`${apiUrl}/users/login`, { user: { email: input.email, password: input.password } })
         if (res.data.status === 200) {
-            setUser(res.data.user)
+            setUser(JSON.parse(res.data.user))
             localStorage.setItem("token", res.data.token)
         } else {
             console.log('Invalid username or password')

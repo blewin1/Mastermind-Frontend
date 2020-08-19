@@ -17,9 +17,9 @@ const PegRow = ({ pegs, selectPeg, selected, active, submitRow }) => {
             clickable={active}
         />)
     return (
-        <Grid columns={6}>
-            <Cell left={2}>
-                {rowFull ? <Button size='sm' onClick={submitRow}>S</Button> :
+        <Grid columns={pegs.codePegs.length + 1}>
+            <Cell>
+                {rowFull ? <button size='sm' onClick={submitRow}>S</button> :
                     <KeyPegs pegs={pegs.keyPegs} />}
             </Cell>
             {codePegs}

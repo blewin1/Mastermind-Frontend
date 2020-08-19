@@ -10,7 +10,7 @@ export const GlobalStyles = createGlobalStyle`
   }
   body {
     align-items: center;
-    background: burlywood;
+    background-color: #A37844;
     color: #EFFFFA;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     height: 100vh;
@@ -70,5 +70,13 @@ export const GlobalStyles = createGlobalStyle`
   .form-error {
     font-size: 14px;
     color: red;
+  }
+
+  .board {
+    max-height: 640px;
+    max-width: 360px;
+    border: 1px solid black;
+    padding: 10px;
+    background-color: burlywood;
   }
   `
